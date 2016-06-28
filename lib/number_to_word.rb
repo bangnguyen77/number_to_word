@@ -1,30 +1,44 @@
-class Fixnum
+class String
   define_method(:number_to_word) do
 
-    words_hash = {1 => "one", 2 => "two", 3 => "three", 4 => "four", 5 => "five", 6 => "six", 7 => "seven", 8 => "eight", 9 => "nine"}
+    ones = {1 => "one", 2 => "two", 3 => "three", 4 => "four", 5 => "five", 6 => "six", 7 => "seven", 8 => "eight", 9 => "nine"}
 
-    tens_hash = {1 => "ten", 2 => "twenty", 3 => "thirty", 4 => "forty", 5 => "fifty", 6 => "sixty", 7 => "seventy", 8 => "eighty", 90 => "ninety"}
+    tens = {2 => "twenty", 3 => "thirty", 4 => "forty", 5 => "fifty", 6 => "sixty", 7 => "seventy", 8 => "eighty", 90 => "ninety"}
 
-    num_array = self.to_s.split("").map{|x| x.to_i}
+    irregulars = {0 => "ten", 1 => "eleven", 2 => "twelve", 3 => "thirteen", 5 => "fifteen"}
 
-    word = ""
+    teen = "teen"
 
-    if num_array.size == 1 && num_array[0] == 1
-      word = "one"
-    elsif num_array.size == 2
-      if num_array[0] == 1 &&
-        if num_array[1] == 0
-          word = "ten"
-        elsif num_array[1] == 4 || num_array[1] > 5
-          word = words_hash[num_array[1]] + "teen"
+    grouping = {1 => "hundred", 2 => "thousand", 3 => "million", 4 => "billion", 5 => "trillion"}
+
+    chunked_input = self.scan(/\d+/)
+
+    if chunked_input.size < 2
+
+#----------------------
+
+      chunk_array = chunked_input[0].split("")
+      word_num = ""
+        if chunk_array.size == 3
+            word_num = ones[chunk_array[0].to_i] + " hundred"
         end
-      elsif num_array[0] == 2
-        word = tens_hash[num_array[0]]
-        if num_array[1] > 0
-          word += " " + words_hash[num_array[1]]
+        if chunk_array.size > 1
+          #
         end
-      end
+
+        if chunk_array.size > 0
+          if chunk_array.size > 2
+            word_num = word_num + " " + ones[chunk_array[2].to_i]
+          elsif chunk_array.size == 1
+            word_num = ones[chunk_array[0].to_i]
+          end
+        end
+
+        return word_num
+
+#----------------------
     end
-    return word
+
+
   end
 end
